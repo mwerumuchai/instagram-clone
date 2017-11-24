@@ -1,0 +1,30 @@
+body {
+  background-color: #fafafa;
+  padding: 0;
+}
+
+#navigation {
+  background-color: #fff;
+  border: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, .0975);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  -webkit-transition: height .2s ease-in-out;
+  transition: height .2s ease-in-out;
+  height: 77px;
+}
+
+#logo {
+  padding-left: 450px;
+}
+
+#instagram {
+  margin-left: 543px;
+  margin-top: 23px;
+}
+
+#login {
+  margin-right: 15px;
+}
