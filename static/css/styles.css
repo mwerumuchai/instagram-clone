@@ -36,5 +36,9 @@ body {
 
 #search {
   margin-left: -527px;
-  margin-top: 21px;
+  margin-top: 11px;
+}
+
+.profile {
+  margin-top: -22px;
 }
