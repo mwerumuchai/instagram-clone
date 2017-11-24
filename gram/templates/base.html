@@ -9,7 +9,9 @@
     <title>Instagram- {{title}}</title>
     {% else %}
     <title>Instagram</title>
-    {% endif %} {% block styles %} {% bootstrap_css%} {% endblock %}
+    {% endif %} {% block styles %} {% bootstrap_css%}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="shortcut icon" type="img/png" href="{% static 'img/instalogo.png' %}" /> {% endblock %}
   </head>
 
   <body>
