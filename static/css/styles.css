@@ -30,10 +30,6 @@ body {
   margin-top: 21px;
 }
 
-#signup {
-  width: 319px;
-}
-
 #search {
   margin-left: -527px;
   margin-top: 11px;
@@ -48,3 +44,11 @@ div.help-block {
   margin-top: 5px;
   margin-bottom: 10px;
   color: #737373;
+}
+
+#editprofiles {
+  background-color: #fff;
+  margin-left: 277px;
+  margin-right: 144px;
+  padding-top: 24px;
+}

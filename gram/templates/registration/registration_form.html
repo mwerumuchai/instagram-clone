@@ -10,14 +10,17 @@
       <div class="panel panel-default">
 
         <div class="panel-heading">
-          <h3 class="text-center">Sign Up</h3>
+          <h5 class="text-center"><img src="/static/img/grambname.png" alt="logo" width="100"></h5>
+        </div>
+        <div class="form-group">
+          <h6><input type="submit" class="btn btn-primary btn-block" value="Log in with Facebook"></h6>
         </div>
         <div class="panel-body" id="help-block">
 
           <form action="/accounts/register/" method="post">
             {% csrf_token %} {% bootstrap_form form %}
             <div class="form-group">
-              <h6 id="signup"><input type="submit" class="btn btn-primary btn-sm" value="Sign Up"></h6>
+              <h6><input type="submit" class="btn btn-primary btn-block" value="Sign Up"></h6>
             </div>
 
             <input type="hidden" name="next" value="{{next}}">
