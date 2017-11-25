@@ -34,11 +34,11 @@
           {% if user.is_authenticated %}
           <ul>
             <ul class="dropdown">
-              <h6 class="profile"><a class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false" href="{% url 'index'%}">
-                <img src="/static/img/profile.png" alt="logo" width="59" height="59"><span class="caret"></span></h6></a>
-              <!-- <a href="#" class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false">{{user.username}}
+              <!-- <h6 class="profile"><a class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false" href="{% url 'index'%}">
+                <img src="/static/img/profile.png" alt="logo" width="59" height="59"><span class="caret"></span></h6></a> -->
+              <a href="#" class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false">{{user.username}}
                           <span class="caret"></span>
-                      </a> -->
+                      </a>
               <ul class="dropdown-menu" role="menu">
                 <li>
                   <a href="/accounts/password/change">Change Password</a>
