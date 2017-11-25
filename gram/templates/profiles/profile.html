@@ -1,0 +1,7 @@
+{% extends 'profiles/base.html' %}{% load bootstrap3 %} {% load static %}
+<div class="container">
+  <form method="post">
+    {% csrf_token %} {{ user_form.as_p }} {{ profile_form.as_p }}
+    <button type="submit">Save changes</button>
+  </form>
+</div>
