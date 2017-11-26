@@ -3,7 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.db import transaction
-from .forms import UserForm,ProfileForm
+from .forms import UserForm,ProfileForm,PostForm
+from .models import Posts
+
+import datetime as dt
 
 
 @login_required(login_url='/accounts/login/')
@@ -33,7 +36,29 @@ def update_profile(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'profiles/profile.html', {
+    return render(request, 'profiles/edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
+    })
+
+@login_required
+def profile(request):
+    post = Posts.display_post()
+    return render(request, 'profiles/profile.html', {"post":post})
+
+@login_required
+def posts(request):
+
+    if request.method == 'POST':
+        post_form = PostForm(request.POST)
+        if post_form.is_valid():
+            post_form.save()
+            messages.success(request, ('Your post was successfully updated!'))
+            return redirect('profiles')
+        else:
+            messages.error(request, ('Please correct the error below.'))
+    else:
+        post_form = PostForm()
+    return render(request,'profiles/post.html', {
+        'post_form': post_form
     })
