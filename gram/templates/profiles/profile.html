@@ -1,4 +1,13 @@
 {% extends 'profiles/base.html' %}{% load bootstrap3 %} {% load static %} {% block content %} <br>
-<div class="container">
-  <a href="/profiles/edit">Edit Profile</a>
-</div> {% endblock %}
+<div class="container" id="editprofiles">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <h1 class="btn text-center">{{user.username}} <br>
+      <a href="/profiles/edit">Edit Profile</a></h1>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+  {% endblock %}

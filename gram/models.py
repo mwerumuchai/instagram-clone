@@ -30,14 +30,13 @@ class Profile(models.Model):
         instance.profile.save()
 
 class Posts(models.Model):
-    image = models.ImageField(upload_to = 'photos/', blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    likes = models.IntegerField()
+    image = models.ImageField(upload_to = 'photos/',blank=True,)
+    profile = models.ForeignKey(Profile,blank=True, null=True)
     post_date = models.DateTimeField(auto_now_add = True)
     description = models.TextField(max_length=500, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.profile
 
     class Meta:
         ordering = ['-post_date']
