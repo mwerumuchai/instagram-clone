@@ -1,0 +1,25 @@
+{% extends 'profiles/base.html' %}{% load bootstrap3 %} {% load static %} {% block content %} <br>
+<div class="container" id="editprofiles">
+  <div class="row">
+    <div class="col-md-4">
+      <ul style="list-style-type:none">
+        <li><a href="/accounts/password/change">Change Password</a></li><br>
+        <li>Authorized Applications</li> <br>
+        <li>Comments</li><br>
+        <li>Email and SMS</li><br>
+        <li>Manage Contacts</li><br>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <a href="/profiles"><h2 class="btn text-center">{{user.username}}</h2></a>
+      <hr>
+      <form method="post">
+        {% csrf_token %} {{ user_form.as_p }} {{ profile_form.as_p }}
+        <button type="submit" class='btn btn-primary'>Save changes</button>
+      </form>
+    </div>
+    <!-- empty div -->
+    <div class="col-md-2"></div>
+  </div>
+</div>
+{% endblock %}
