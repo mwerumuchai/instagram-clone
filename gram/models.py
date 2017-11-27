@@ -20,6 +20,9 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateTimeField(null=True, blank=True)
 
+
+    User.profile = property(lambda u: Profile.objects.get_or_create(user=u)[0])
+
     @receiver(post_save, sender=User) #post_save:signal for whenever save event occur
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
@@ -29,23 +32,28 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
+
 class Posts(models.Model):
-    image = models.ImageField(upload_to = 'photos/',blank=True,)
-    profile = models.ForeignKey(Profile,blank=True, null=True)
+    image = models.ImageField(upload_to = 'photos/',blank=True)
     post_date = models.DateTimeField(auto_now_add = True)
     description = models.TextField(max_length=500, blank=True)
+    user = models.ForeignKey(User)
 
     def __str__(self):
-        return self.profile
+        return self.description
 
     class Meta:
-        ordering = ['-post_date']
+        ordering = ['post_date']
 
     @classmethod
     def display_post(cls):
-        post = Posts.objects.all()
+        post = cls.objects.all()
         return post
 
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
 
 class Comments(models.Model):
     comment = models.TextField(max_length=255, blank=True)

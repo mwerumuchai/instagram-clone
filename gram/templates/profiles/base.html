@@ -1,4 +1,4 @@
-{% load bootstrap3 %}{% load staticfiles %}
+{% extends "base.html" %} {% load bootstrap3 %}{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,8 +15,7 @@
   </head>
 
   <body>
-    {% include "navbar.html" %} <br>
-    <hr> {% block content %} {% endblock %} {% block scripts %}
+    {% block content %} {% endblock %} {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     {% bootstrap_javascript %} {% endblock %}
 

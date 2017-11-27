@@ -43,16 +43,19 @@ def update_profile(request):
 
 @login_required
 def profile(request):
+    # user = User.objects.get(pk=user_id)
     post = Posts.display_post()
     return render(request, 'profiles/profile.html', {"post":post})
 
 @login_required
 def posts(request):
-
+    current_user = request.user
     if request.method == 'POST':
-        post_form = PostForm(request.POST)
+        post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
-            post_form.save()
+            single_post = post_form.save(commit = False)
+            single_post.user = current_user
+            single_post.save()
             messages.success(request, ('Your post was successfully updated!'))
             return redirect('profiles')
         else:
