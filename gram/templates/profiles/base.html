@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% load bootstrap3 %}{% load staticfiles %}
+{% load bootstrap3 %}{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,12 +10,13 @@
     {% else %}
     <title>Instagram</title>
     {% endif %} {% block styles %} {% bootstrap_css%}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="shortcut icon" type="img/png" href="{% static 'img/instalogo.png' %}" /> {% endblock %}
   </head>
 
   <body>
-    {% block content %} {% endblock %} {% block scripts %}
+    {% include "navbar.html" %} <br>
+    <hr> {% block content %} {% endblock %} {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     {% bootstrap_javascript %} {% endblock %}
 

@@ -1,20 +1,21 @@
-{%extends 'base.html'%}{% load bootstrap3 %} {% load staticfiles %}
+{% load bootstrap3 %}{% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> {%if title%}
-
-    <title>{{title}}</title>
-
-    {%endif%} {% block styles %} {% bootstrap_css %} {% endblock %}
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> {% if title %}
+    <title>Instagram- {{title}}</title>
+    {% else %}
+    <title>Instagram</title>
+    {% endif %} {% block styles %} {% bootstrap_css%}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="img/png" href="{% static 'img/instalogo.png' %}" /> {% endblock %}
   </head>
 
   <body>
-
-    {% block content %} {%endblock%} {% block scripts %}
+    {% include "navbar.html" %} {% block content %} {% endblock %} {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     {% bootstrap_javascript %} {% endblock %}
 
