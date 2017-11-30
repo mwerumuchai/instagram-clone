@@ -1,4 +1,4 @@
-{% extends 'profiles/base.html'%} {% load bootstrap3 %} {% load staticfiles %} {% block content %} <br>
+{% extends 'profiles/base.html'%} {% load bootstrap3 %} {% load staticfiles %} {% load comments %} {% block content %} <br>
 <div class="container" id="editprofiles">
   <div class="row">
     <div class="col-md-3">
@@ -11,9 +11,15 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-1"></div>
-    {% for post_item in post %}
-    <div class="col-md-6" id="image">
+    <div class="col-md-4"></div>
+    {% get_comment_count for post_item in post as comment_count %}
+    <!-- commentlist -->
+    {% for comment in comment_list %}
+    <a name="c{{ comment.id }}"></a>
+    <a href="{% get_comment_permalink comment %}">
+      permalink for comment
+    </a>
+    <div class="col-md-4" id="image">
       <div class="well">
         <h3><a href="/profiles">@{{user.username}}</a></h3>
         <p>{{post_item.location}}</p>
@@ -26,12 +32,13 @@
           {% endif %}
           <div class="input-group">
             {% if user in post.liker %}
-            <a href="" class="input-group-addon btn btn-default red"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% else %}
-            <a href="" class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% endif %}
+            <a href="{% url 'posts:unlike' post.slug %}" class="input-group-addon btn btn-default red"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% else %}
+            <a href="{% url 'posts:like' post.slug %}" class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% endif %}
             <input type="text" class="form-control" placeholder="Add a comment..." aria-describedby="comment">
           </div>
         </div>
       </div>
     </div>
     {% endfor %}
-    <div class="col-md-2"></div> {% endblock %}
+    <div class="col-md-4"></div> {% endblock %}
+  </div>
