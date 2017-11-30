@@ -28,16 +28,19 @@ class Profile(models.Model):
     User.profile = property(lambda u: Profile.objects.get_or_create(user=u)[0])
 
     def __str__(self):
-        return self.email
+        return self.user.username
 
-    @receiver(post_save, sender=User) #post_save:signal for whenever save event occur
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
 
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+
+    instance.profile.save()
 
 def generate_id():
         n = 10
@@ -78,3 +81,8 @@ class Like(models.Model):
 
     def __str__(self):
         return '{} : {}'.format(self.user, self.posts)
+
+# follow
+class Follow(models.Model):
+    user = models.ForeignKey(User))
+    profile = models.ForeignKey(Profile)

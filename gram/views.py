@@ -27,7 +27,7 @@ def logout(request):
 
 @login_required
 @transaction.atomic
-def update_profile(request):
+def update_profile(request,username):
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
@@ -137,3 +137,6 @@ def unlike_post_view(request, *args, **kwargs):
             kwargs={'slug': kwargs['slug']}
         )
     )
+
+# follow
+# @login_required

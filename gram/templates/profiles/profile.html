@@ -1,4 +1,4 @@
-{% extends 'profiles/base.html'%} {% load bootstrap3 %} {% load staticfiles %} {% load comments %} {% block content %} <br>
+{% extends 'profiles/base.html'%} {% load bootstrap3 %} {% load staticfiles %}{% block content %} <br>
 <div class="container" id="editprofiles">
   <div class="row">
     <div class="col-md-3">
@@ -15,7 +15,7 @@
     {% for post_item in post %}
     <div class="col-md-4" id="image">
       <div class="well">
-        <h3><a href="/profiles">@{{user.username}}</a></h3>
+        <h3><a href="{% url 'profiles' user.username %}">{{user.username}}</a></h3>
         <p>{{post_item.location}}</p>
         <img src="{{post_item.image.url}}" class="img-responsive" alt="Image">
         <div class="container" id="like">
