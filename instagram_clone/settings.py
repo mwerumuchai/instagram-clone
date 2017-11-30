@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gram',
     'bootstrap3',
+    'django.contrib.sites',
+    'django_comments',
 ]
 
 MIDDLEWARE = [

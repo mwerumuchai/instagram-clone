@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% load bootstrap3 %} {% load static %} {% block content %} <br>
+<div class="container" id="editprofiles">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <h3 class="btn text-center">{{user.username}}</h3>
+      <hr>
+      <form action="{% url 'uploadpost'%}" method="post" enctype="multipart/form-data">
+        {% csrf_token %} {{ post_form.as_p }}
+        <button type="submit" class='btn btn-primary'>Upload Post</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

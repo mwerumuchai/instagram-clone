@@ -22,4 +22,5 @@ urlpatterns = [
     url('', include('gram.urls')),
     url(r'^logout/$', views.logout, {"next_page": '/accounts/register/'}),
     url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^comments/', include('django_comments.urls')),
 ]
