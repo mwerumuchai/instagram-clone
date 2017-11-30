@@ -10,6 +10,7 @@ from .forms import UserForm,ProfileForm,PostForm,ProfilePicForm
 from .models import Posts, Like, Profile
 import datetime as dt
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 
 
 @login_required(login_url='/accounts/login/')
@@ -57,15 +58,14 @@ def profile(request,username):
     return render(request, 'profiles/profile.html', {"post":post, "user":user, "profile_pic":profile_pic})
 
 @login_required
-def posts(request,username):
-    current_user = request.user.username
+def posts(request):
     if request.method == 'POST':
-        post_form = PostForm(request.POST, request.FILES)
+        post_form = PostForm(request.POST,files =request.FILES)
         if post_form.is_valid():
-            single_post = post_form.save(commit = False)
+            single_post = Posts(user =request.user ,image = request.FILES['image'], description = request.POST['description'] )
             single_post.save()
             messages.success(request, ('Your post was successfully updated!'))
-            return redirect('profiles')
+            return redirect(reverse('profiles', kwargs = {'username': request.user.username}))
         else:
             messages.error(request, ('Please correct the error below.'))
     else:
