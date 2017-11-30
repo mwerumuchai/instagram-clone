@@ -2,16 +2,20 @@ from __future__ import absolute_import
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db import transaction
-from .forms import UserForm,ProfileForm,PostForm
-from .models import Posts, Like
+from django.http import Http404
+from .forms import UserForm,ProfileForm,PostForm,ProfilePicForm
+from .models import Posts, Like, Profile
 import datetime as dt
+from django.core.exceptions import ObjectDoesNotExist
 
 
 @login_required(login_url='/accounts/login/')
 def index(request):
-    return render(request, 'index.html')
+    post = Posts.objects.all()
+    return render(request, 'index.html',{"post":post})
 
 @login_required(login_url='/accounts/register/')
 def homepage(request):
@@ -42,19 +46,23 @@ def update_profile(request):
     })
 
 @login_required
-def profile(request):
-    # user = User.objects.get(pk=user_id)
-    post = Posts.display_post()
-    return render(request, 'profiles/profile.html', {"post":post})
+def profile(request,username):
+    try:
+        user = User.objects.get(username=username)
+        profile_pic = Profile.objects.filter(user_id=user).all().order_by('-id')
+        post = Posts.objects.filter(user_id=user).all().order_by('-id')
+    except ObjectDoesNotExist:
+        raise Http404()
+
+    return render(request, 'profiles/profile.html', {"post":post, "user":user, "profile_pic":profile_pic})
 
 @login_required
-def posts(request):
-    current_user = request.user
+def posts(request,username):
+    current_user = request.user.username
     if request.method == 'POST':
         post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
             single_post = post_form.save(commit = False)
-            single_post.user = current_user
             single_post.save()
             messages.success(request, ('Your post was successfully updated!'))
             return redirect('profiles')
@@ -65,11 +73,28 @@ def posts(request):
     return render(request,'profiles/post.html', {
         'post_form': post_form
     })
+
+# update profile pic
+def profile_pic_update(request, username):
+    current_user = request.user
+    if request.method == 'POST':
+        form = ProfilePicForm(request.POST, files=request.FILES)
+        if form.is_valid():
+            single_profile = form.save(commit = False)
+            single_profile.user = current_user
+            single_profile.save()
+            return redirect(reverse('profile', kwargs={'username': request.user.username}))
+    else:
+        form = ProfilePicForm()
+        return render(request,'profiles/update_profilepic.html', {'form':form})
+
+
+
 # like post
 @login_required
 def like_post_view(request, *args, **kwargs):
     try:
-        post = Post.objects.get()
+        post = Posts.objects.get(slug=kwargs['slug'])
 
         _, created = Like.objects.get_or_create(post=post, user=request.user)
 
@@ -78,7 +103,7 @@ def like_post_view(request, *args, **kwargs):
                 request,
                 'You\'ve already liked the post.'
             )
-    except Post.DoesNotExist:
+    except Posts.DoesNotExist:
         messages.warning(
             request,
             'Post does not exist'
@@ -90,7 +115,6 @@ def like_post_view(request, *args, **kwargs):
             kwargs={'slug': kwargs['slug']}
         )
     )
-
 # unlike posts
 @login_required
 def unlike_post_view(request, *args, **kwargs):
