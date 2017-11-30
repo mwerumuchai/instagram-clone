@@ -50,7 +50,7 @@ class Posts(models.Model):
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User)
     location = models.CharField(max_length=30, blank=True)
-    slug = models.SlugField(max_length=10, default=generate_id)
+    slug = models.SlugField(max_length=10,unique=True, default=generate_id)
 
     def __str__(self):
         return self.description
@@ -78,12 +78,3 @@ class Like(models.Model):
 
     def __str__(self):
         return '{} : {}'.format(self.user, self.posts)
-
-class Comments(models.Model):
-    comment = models.TextField(max_length=255, blank=True)
-    posts = models.ForeignKey(Posts)
-    user = models.ForeignKey(User)
-    pub_date = models.DateField(null=True, blank=True)
-
-    def __str__(self):
-        return self.comment
