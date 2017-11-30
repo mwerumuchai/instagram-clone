@@ -12,7 +12,17 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ('profile_pic','website', 'bio', 'location', 'phone_number')
 
+class ProfilePicForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('profile_pic',)
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Posts
         fields = ('image','description')
+
+# class NewCommentsForm(forms.ModelForm):
+#     class Meta:
+#         model = Comment
+#         exclude = ['user', 'post']
