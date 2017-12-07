@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile,Posts
+from .models import Profile,Posts,Comments
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -22,7 +22,7 @@ class PostForm(forms.ModelForm):
         model = Posts
         fields = ('image','description')
 
-# class NewCommentsForm(forms.ModelForm):
-#     class Meta:
-#         model = Comment
-#         exclude = ['user', 'post']
+class NewCommentsForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ('comment',)
