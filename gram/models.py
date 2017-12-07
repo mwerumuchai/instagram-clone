@@ -6,8 +6,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 import datetime as dt
 from random import choice
 import string as str
+from vote.models import VoteModel
+from vote.managers import VotableManager
 
-# genders = (
+# Gender_Choices = (
 #     ('male','Male'),
 #     ('female' 'Female'),
 #     ('not_specified' 'Not Specified'),
@@ -19,7 +21,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     email = models.EmailField()
     phone_number = PhoneNumberField(max_length=10, blank=True)
-    # gender = models.CharField(max_length=25,choices=genders)
+    # gender = models.CharField(max_length=30, choices=Gender_Choices, default='None', blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateTimeField(null=True, blank=True)
     profile_pic = models.ImageField(upload_to = 'photos/',blank=True)
@@ -47,13 +49,15 @@ def generate_id():
         random = str.ascii_uppercase + str.ascii_lowercase + str.digits
         return ''.join(choice(random) for _ in range(n))
 
-class Posts(models.Model):
+class Posts(VoteModel,models.Model):
     image = models.ImageField(upload_to = 'photos/',blank=True)
     post_date = models.DateTimeField(auto_now_add = True)
     description = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(User)
     location = models.CharField(max_length=30, blank=True)
     slug = models.SlugField(max_length=10,unique=True, default=generate_id)
+    upvote_count = models.PositiveIntegerField(default=0)
+    downvote_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.description
@@ -65,8 +69,13 @@ class Posts(models.Model):
         return reverse('posts:view', kwargs={'slug': self.slug})
 
     @classmethod
-    def display_post(cls):
-        post = cls.objects.all()
+    def get_posts(cls):
+        post = Posts.objects.all()
+
+        return post
+    @classmethod
+    def get_single_post(cls, pk):
+        post = cls.objects.get(pk=pk)
         return post
 
     @property
@@ -84,5 +93,26 @@ class Like(models.Model):
 
 # follow
 class Follow(models.Model):
-    user = models.ForeignKey(User))
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile)
+
+    def __str__(self):
+        return self.user.username
+
+    @classmethod
+    def get_following(cls,user_id):
+        following =  Follow.objects.filter(user=user_id).all()
+        return following
+
+# comments
+class Comments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ForeignKey(Posts)
+    comment = models.CharField(max_length=150, blank=True)
+    date_commented = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_commented']
+
+    def save_comment(self):
+        self.save()
