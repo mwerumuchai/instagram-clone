@@ -50,6 +50,9 @@
                   <a href="{% url 'editprofile' user.username %}">Edit Profile</a>
                 </li>
                 <li>
+                  <a href="{% url 'follow' user.id %}">Follow</a>
+                </li>
+                <li>
                   <a href="{% url 'update_profilepic' user.username %}">Change Profile Picture</a>
                 </li>
                 <li>

@@ -1,29 +1,20 @@
 {% extends 'comments/base.html' %} {% load static %} {% load bootstrap3 %}
 
-
-<!-- Styles block -->
-{% block styles %} {{block.super}}
-<link rel="stylesheet" href="{% static 'css/styles.css'%}"> {% endblock %}
-
 <!-- Content block -->
 {% block content %} {{block.super}}
 
 <div class="container">
-
   <!-- Empty Div -->
   <div class="col-md-2 col-lg-2">
 
   </div>
-
-  <!-- Create Comment form -->
-
   <div class="col-md-8 col-lg-8">
 
-    <form action="{% url 'comment' current_post.id%}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'comment' post.id%}" method="post" enctype="multipart/form-data">
 
       {% csrf_token %} {% bootstrap_form form %}
 
-      <input type="submit" class="btn btn-success btn-lg" value="Post">
+      <input type="submit" class="btn btn-success btn-sm" value="Post">
 
     </form>
 
@@ -33,9 +24,6 @@
   <div class="col-md-2 col-lg-2">
 
   </div>
-
-
-
 </div>
 
 {% endblock %}

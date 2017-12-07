@@ -19,15 +19,16 @@
         <img src="{{post_item.image.url}}" class="img-responsive" alt="Image">
         <div class="container" id="like">
           <p>{{post_item.description}}</p>
-          {% if post.liker|length %}
-          <a href="#" data-toggle="modal" data-target="#{{ post.slug }}_likers_modal">Likes: {{ post.liker|length }}</a> {% include 'profiles/likers.html' %} {% else %}
           <p>Be the first to like this.</p>
-          {% endif %}
           <div class="input-group">
-            {% if user in post.liker %}
-            <a href="" class="input-group-addon btn btn-default red"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% else %}
-            <a href="" class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% endif %}
-            <input type="text" class="form-control" placeholder="Add a comment..." aria-describedby="comment">
+            <a href="{% url 'upvote_post' post_item.id %}">
+              <span class="glyphicon glyphicon-thumbs-up" id="comment"></span></a> {{post_item.upvote_count}}
+            <a href="{% url 'downvote_post' post_item.id %}">
+              <span class="glyphicon glyphicon-thumbs-down" id="comment"></span></a> {{post_item.downvote_count}}
+            <a href="{% url 'comment' post_item.id%}">
+                <i class="fa fa-comment-o" style="font-size:24px"></i></a> {{post_item.id}}
+            </a>
+
           </div>
         </div>
       </div>

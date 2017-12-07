@@ -12,27 +12,25 @@
   </div>
   <div class="row">
     <div class="col-md-4"></div>
+    <div class="col-md-1"></div>
     {% for post_item in post %}
-    <div class="col-md-4" id="image">
-      <div class="well">
-        <h3><a href="{% url 'profiles' user.username %}">{{user.username}}</a></h3>
+    <div class="col-md-6" id="image">
+      <div class="well well-sm">
+        <h3><a href="/profiles">{{post_item.user.username}}</a></h3>
         <p>{{post_item.location}}</p>
         <img src="{{post_item.image.url}}" class="img-responsive" alt="Image">
         <div class="container" id="like">
           <p>{{post_item.description}}</p>
-          {% if post.liker|length %}
-          <a href="#" data-toggle="modal" data-target="#{{ post.slug }}_likers_modal">Likes: {{ post.liker|length }}</a> {% include 'profiles/likers.html' %} {% else %}
           <p>Be the first to like this.</p>
-          {% endif %}
           <div class="input-group">
-            {% if user in post.liker %}
-            <a href="" class="input-group-addon btn btn-default red"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% else %}
-            <a href="" class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-heart" id="comment"></span></a> {% endif %}
-            <input type="text" class="form-control" placeholder="Add a comment..." aria-describedby="comment">
+            <a href="{% url 'upvote_post' post_item.id %}">
+              <span class="glyphicon glyphicon-thumbs-up" id="comment"></span></a> {{post_item.upvote_count}}
+            <a href="{% url 'downvote_post' post_item.id %}">
+              <span class="glyphicon glyphicon-thumbs-down" id="comment"></span></a> {{post_item.downvote_count}}
           </div>
         </div>
       </div>
     </div>
     {% endfor %}
-    <div class="col-md-4"></div> {% endblock %}
+    <div class="col-md-2"></div> {% endblock %}
   </div>
