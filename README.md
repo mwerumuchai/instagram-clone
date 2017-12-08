@@ -22,11 +22,25 @@ As a user I would like to:
 
 6. Download a picture I like and save it to my machine.
 
-## Deployed site
+## Specifications
 
+| Behaviour | Input | Output |
+| ------------ |:----------:| -------: | 
+| Register Account | Enter details | An account is created |
+| Login User | Email: .....@gmail.com <br> Password:*****| Logged in into the account and directed to the index page| 
+| Display User timeline  | N/A | User Posts |
+| Display drivers available | **Click** Profile icon | User is directed to a page where they can view all their posts |
+| Display edit profile information | **Click** on edit profile | Enter any details that need to be edited |
+|  |**Click** save | Save edited details |
+| Display a list of people to follow | **Click** on follow | Follow other users |
+| | **Click** like/dislike  | Like/dislike other user posts|
+| Display comment form | **Click** on comment | Comment on a user post |
+
+## Deployed site
+[Click here](https://the-gram-by-mweru.herokuapp.com/)
 
 ## Known Bugs
-
+* Follow
 
 ## Technologies Used
 * Python3.6 
