@@ -4,11 +4,17 @@
 {% block content %} {{block.super}}
 
 <div class="container">
+  <hr>
   <!-- Empty Div -->
-  <div class="col-md-2 col-lg-2">
-
+  <div class="col-md-7 col-lg-7"> <br>
+    <img src="{{post.image.url}}" class="img-responsive" alt="Image">
+    <!-- loop through comments -->
+    <h4>View all {{ comment|length }}  comments</h4> {% for comment in comments %}
+    <p><strong> {{comment.user.username}}:</strong>{{comment.comment}} {{comment.date_posted}}</hp>
+      <!-- end loop -->
+      {% endfor %}
   </div>
-  <div class="col-md-8 col-lg-8">
+  <div class="col-md-3 col-lg-3">
 
     <form action="{% url 'comment' post.id%}" method="post" enctype="multipart/form-data">
 

@@ -44,6 +44,16 @@ def save_user_profile(sender, instance, **kwargs):
 
     instance.profile.save()
 
+@classmethod
+def get_other_userprofiles(cls,user_id):
+    profiles = Profile.objects.all()
+    other_userprofiles = []
+    for profile in profiles:
+        if profile.user_id !=user_id:
+             other_userprofiles.append(profile)
+    return other_userprofiles
+
+
 def generate_id():
         n = 10
         random = str.ascii_uppercase + str.ascii_lowercase + str.digits
@@ -116,3 +126,22 @@ class Comments(models.Model):
 
     def save_comment(self):
         self.save()
+
+    @classmethod
+    def single_comment(cls,id):
+        comment = cls.objects.all()
+        return comment
+
+    @classmethod
+    def get_comment(cls,id):
+        comments = cls.objects.all()
+        return comments
+
+    @classmethod
+    def get_post_comment(cls,pk):
+        post = Posts.get_single_post(pk)
+        comments = []
+        all_comments = Comments.objects.filter(image_id=post.id).all()
+        comments += all_comments
+        comment_count = len(comments)
+        return comments

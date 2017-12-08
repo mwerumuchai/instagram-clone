@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import Http404
 from .forms import UserForm,ProfileForm,PostForm,ProfilePicForm,NewCommentsForm
-from .models import Posts, Like, Profile, Follow
+from .models import Posts, Like, Profile, Follow, Comments
 import datetime as dt
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
@@ -21,13 +21,9 @@ votes = VotableManager()
 def index(request):
     current_user = request.user
     post = Posts.get_posts()
-    following = Follow.get_following(current_user.id)
-    following_posts = []
-    for follow in following:
-        for posts in post:
-            # if follow.profile == post.profile:
-            following_posts.append(posts)
-    return render(request, 'index.html',{"post":post,"following":following,"following_posts":following_posts})
+
+    # follow other users
+    return render(request, 'index.html',{"post":post,"user":current_user})
 
 @login_required(login_url='/accounts/login/')
 def homepage(request):
@@ -147,6 +143,7 @@ def follow(request,pk):
 def comment(request,pk):
     current_user = request.user
     post = Posts.get_single_post(pk)
+    comments = Comments.get_post_comment(post.id)
     form = NewCommentsForm(request.POST)
     if request.method == 'POST':
         if form.is_valid:
@@ -158,4 +155,4 @@ def comment(request,pk):
             return redirect('home')
         else:
             form = NewCommentsForm()
-    return render(request, 'comments/new_comment.html', {"form":form, "post":post})
+    return render(request, 'comments/new_comment.html', {"form":form, "post":post, "comments":comments})
