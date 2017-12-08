@@ -32,35 +32,14 @@
         <!-- login -->
         <div class="navbar-right" id="login">
           {% if user.is_authenticated %}
-          <ul>
-            <ul class="dropdown">
-              <!-- <h6 class="profile"><a class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false" href="{% url 'index'%}">
-                <img src="/static/img/profile.png" alt="logo" width="59" height="59"><span class="caret"></span></h6></a> -->
-              <a href="/profiles" class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false">{{user.username}}
-                          <span class="caret"></span>
-                      </a>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="{% url 'uploadpost'%}">Upload Post</a>
-                </li>
-                <li>
-                  <a href="{% url 'profiles' user.username %}">Profile</a>
-                </li>
-                <li>
-                  <a href="{% url 'editprofile' user.username %}">Edit Profile</a>
-                </li>
-                <li>
-                  <a href="{% url 'follow' user.id %}">Follow</a>
-                </li>
-                <li>
-                  <a href="{% url 'update_profilepic' user.username %}">Change Profile Picture</a>
-                </li>
-                <li>
-                  <a href="/logout">Logout</a>
-                </li>
-              </ul>
+          <div class="navbar-collapse collapse-right">
+            <ul class="nav navbar-nav" id="navigation" style="color: black;">
+              <li><a href="{% url 'profiles' user.username %}"><img src="/static/img/explore.png" alt="logo" id="profile"></a></li>
+              <li><a href="{% url 'profiles' user.username %}"><img src="/static/img/profile.png" alt="logo" id="profile"></a></li>
+              <li><a href="/logout">Logout</a></li>
             </ul>
-          </ul>
+          </div>
+
           {% else %}
           <li>
             <a class='btn btn-default' href="/accounts/login">Login</a>

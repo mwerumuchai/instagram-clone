@@ -18,17 +18,16 @@
         <p>{{post_item.location}}</p>
         <img src="{{post_item.image.url}}" class="img-responsive" alt="Image">
         <div class="container" id="like">
-          <p>{{post_item.description}}</p>
-          <p>Be the first to like this.</p>
           <div class="input-group">
-            <a href="{% url 'upvote_post' post_item.id %}">
+            <h3><a href="{% url 'upvote_post' post_item.id %}">
               <span class="glyphicon glyphicon-thumbs-up" id="comment"></span></a> {{post_item.upvote_count}}
             <a href="{% url 'downvote_post' post_item.id %}">
               <span class="glyphicon glyphicon-thumbs-down" id="comment"></span></a> {{post_item.downvote_count}}
             <a href="{% url 'comment' post_item.id%}">
-                <i class="fa fa-comment-o" style="font-size:24px"></i></a> {{post_item.id}}
-            </a>
-
+              <i class="fa fa-comment-o" style="font-size:24px"></i></a></h3>
+            <h4>Be the first to like this.</h4>
+            <h4>{{post_item.description}}</h4>
+            <h4> View all {{post_item.id}} Comments</h4>
           </div>
         </div>
       </div>

@@ -6,19 +6,30 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db import transaction
 from django.http import Http404
-from .forms import UserForm,ProfileForm,PostForm,ProfilePicForm
-from .models import Posts, Like, Profile
+from .forms import UserForm,ProfileForm,PostForm,ProfilePicForm,NewCommentsForm
+from .models import Posts, Like, Profile, Follow
 import datetime as dt
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+from vote.managers import VotableManager
 
+#votes
+votes = VotableManager()
 
-@login_required(login_url='/accounts/login/')
-def index(request):
-    post = Posts.objects.all()
-    return render(request, 'index.html',{"post":post})
 
 @login_required(login_url='/accounts/register/')
+def index(request):
+    current_user = request.user
+    post = Posts.get_posts()
+    following = Follow.get_following(current_user.id)
+    following_posts = []
+    for follow in following:
+        for posts in post:
+            # if follow.profile == post.profile:
+            following_posts.append(posts)
+    return render(request, 'index.html',{"post":post,"following":following,"following_posts":following_posts})
+
+@login_required(login_url='/accounts/login/')
 def homepage(request):
     return render(request, 'homepage.html')
 
@@ -90,53 +101,61 @@ def profile_pic_update(request, username):
 
 
 
-# like post
-@login_required
-def like_post_view(request, *args, **kwargs):
-    try:
-        post = Posts.objects.get(slug=kwargs['slug'])
+# like/upvote post
+@login_required (login_url='/accounts/register/')
+def upvote_posts(request, pk):
+    post = Posts.get_single_post(pk)
+    user = request.user
+    user_id = user.id
 
-        _, created = Like.objects.get_or_create(post=post, user=request.user)
+    if user.is_authenticated:
+        upvote = post.votes.up(user_id)
+        print(upvote)
+        post.upvote_count = post.votes.count()
+        post.save()
+    return redirect('home')
 
-        if not created:
-            messages.warning(
-                request,
-                'You\'ve already liked the post.'
-            )
-    except Posts.DoesNotExist:
-        messages.warning(
-            request,
-            'Post does not exist'
-        )
+# dislike/downvote post
+@login_required (login_url='/accounts/register/')
+def downvote_posts(request, pk):
+    post = Posts.get_single_post(pk)
+    user = request.user
+    user_id = user.id
 
-    return HttpResponseRedirect(
-        reverse_lazy(
-            'posts:view',
-            kwargs={'slug': kwargs['slug']}
-        )
-    )
-# unlike posts
-@login_required
-def unlike_post_view(request, *args, **kwargs):
-    try:
-        like = Like.objects.get(
-            post__slug=kwargs['slug'],
-            user=request.user
-        )
-    except Like.DoesNotExist:
-        messages.warning(
-            request,
-            'You didn\'t like the post.'
-        )
-    else:
-        like.delete()
+    if user.is_authenticated:
+        downvote = post.votes.down(user_id)
+        print(post.id)
+        print(downvote)
+        print(post.vote_score)
+        post.downvote_count = post.votes.count()
+        post.save()
 
-    return HttpResponseRedirect(
-        reverse_lazy(
-            'posts:view',
-            kwargs={'slug': kwargs['slug']}
-        )
-    )
+    return redirect('home')
 
 # follow
-# @login_required
+@login_required (login_url='/accounts/register/')
+def follow(request,pk):
+    current_user = request.user
+    follow_profile = Profile.objects.get(pk)
+    following = Follow(user=current_user, profile=follow_profile)
+    following.save()
+    return redirect('follow')
+
+
+# comment section
+@login_required (login_url='/accounts/register/')
+def comment(request,pk):
+    current_user = request.user
+    post = Posts.get_single_post(pk)
+    form = NewCommentsForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid:
+            comment = form.save(commit=False)
+            comment.user = current_user
+            comment.post = post
+            comment.image_id = post.id
+            comment.save()
+            return redirect('home')
+        else:
+            form = NewCommentsForm()
+    return render(request, 'comments/new_comment.html', {"form":form, "post":post})

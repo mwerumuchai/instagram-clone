@@ -10,10 +10,10 @@ urlpatterns = [
     url(r'^profiles/post/$', views.posts,name='uploadpost'),
     url(r'^profiles/edit/(?P<username>[-_\w.]+)$', views.update_profile,name='editprofile'),
     url(r'^update-profile-picture/(?P<username>[-_\w.]+)$', views.profile_pic_update, name='update_profilepic'),
-    url(r'^profiles/follow/(\d+)$',views.follow, name='follow'),
     url(r'^profiles/upvote/(\d+)$', views.upvote_posts, name="upvote_post"),
     url(r'^profiles/downvote/(\d+)$', views.downvote_posts, name="downvote_post"),
-    url(r'^profiles/comment/(\d+)$', views.comment, name="comment")
+    url(r'^profiles/comment/(\d+)$', views.comment, name="comment"),
+    url(r'^follow/(\d+)$',views.follow, name='follow'),
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

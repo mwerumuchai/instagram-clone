@@ -26,7 +26,7 @@ SECRET_KEY =config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =config('DEBUG',default=False,cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['the-gram-by-mweru.herokuapp.com/']
 
 LOGIN_REDIRECT_URL = ('/')
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gram',
     'bootstrap3',
+    'vote',
 ]
 
 MIDDLEWARE = [
@@ -88,6 +89,11 @@ DATABASES = {
     }
 }
 
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -113,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 

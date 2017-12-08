@@ -1,0 +1,50 @@
+{% extends 'Follow/base.html' %} {% load static %} {% load bootstrap3 %}
+
+
+<!-- Content block -->
+{% block content %} {{block.super}}
+
+<div class="container">
+
+  {%if following_posts%}
+
+  <div class="row">
+
+    {%for follow in following_posts%}
+
+    <!-- Profile Div -->
+
+    <div class="col-md-10 col-lg-10">
+
+      <div class="panel panel-default">
+
+        <div class="panel-heading">
+
+          <img src="{{follow.profile.profile_pic.url}}" alt="{{follow.profile.user.username}}" class="img-responsive profilePicture">
+
+          <h6 class="username">{{follow.profile.user.username}}</h6>
+
+        </div>
+
+        <div class="panel-body">
+
+          <a href="{%url 'post' follow.id%}"><img src="{{follow.image.url}}" alt="" class="img-responsive postImage">
+            <h5 class="text-center">Something</h5></a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {% endfor %}
+
+  </div>
+
+
+  {%else%}
+
+  <h2 class="text-center">You are Not Following Anyone</h2> {%endif%}
+</div>
+
+{% endblock %}

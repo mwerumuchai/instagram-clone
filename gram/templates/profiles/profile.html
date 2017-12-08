@@ -3,11 +3,21 @@
   <div class="row">
     <div class="col-md-3">
       <img src="{{profile_pic.url}}" class="img-responsive" alt="Image">
+      <h3><strong><a href="{% url 'profiles' user.username %">{{user.username}}</a></strong></h3><br>
     </div>
-    <div class="col-md-6"><br>
-      <h2><button class="btn btn-info text-center">{{user.username}}</h2></button> <br>
-      <h3><a href="/profiles/edit">Edit Profile</a></h3>
-      <div class="col-md-3"></div>
+
+    <div class="col-md-3"><br>
+      <ul style="list-style-type:none">
+        <h3><li><a href="{% url 'editprofile' user.username %}">Edit Profile</a></li> <br>
+        <li><a href="{% url 'uploadpost'%}">Upload Posts</a></li><br></h3>
+      </ul>
+    </div>
+    <div class="col-md-4"><br>
+      <ul style="list-style-type:none">
+        <h3><li><a href="{% url 'follow' user.id %}">Follow</a></li><br>
+        <li><a href="{% url 'update_profilepic' user.username %}">Change Profile Picture</a></li><br></h3>
+      </ul>
+      <div class="col-md-4"></div>
     </div>
   </div>
   <div class="row">
@@ -27,6 +37,9 @@
               <span class="glyphicon glyphicon-thumbs-up" id="comment"></span></a> {{post_item.upvote_count}}
             <a href="{% url 'downvote_post' post_item.id %}">
               <span class="glyphicon glyphicon-thumbs-down" id="comment"></span></a> {{post_item.downvote_count}}
+            <a href="{% url 'comment' post_item.id%}">
+              <i class="fa fa-comment-o" style="font-size:24px"></i></a> {{post_item.id}}
+            </a>
           </div>
         </div>
       </div>
